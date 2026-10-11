@@ -1,0 +1,16 @@
+[project]
+name = "comfyui-nodes2classic"
+description = "Draws Nodes 2.0-only widgets (Compare Images, LoRA stacks, Crop, Video Crop/Trim, Curves, Colors, Bounding Boxes, Resolution preview) on the classic litegraph canvas."
+version = "0.1.0"
+license = { file = "LICENSE" }
+
+[project.urls]
+Repository = "https://github.com/Nynxz/ComfyUI-Nodes2Classic"
+BugTracker = "https://github.com/Nynxz/ComfyUI-Nodes2Classic/issues"
+
+[tool.comfy]
+PublisherId = "nynxz"
+DisplayName = "Nodes 2.0 → Classic"
+Icon = "https://avatars.githubusercontent.com/u/60878743?v=4"
+Tags = []
+Repository = "https://github.com/Nynxz/ComfyUI-Nodes2Classic"

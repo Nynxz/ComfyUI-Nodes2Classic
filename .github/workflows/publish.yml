@@ -1,0 +1,25 @@
+name: Publish to Comfy registry
+
+# The registry refuses a version it already has, so publishing follows version bumps:
+# any push to main that touches pyproject.toml, or a manual run.
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [pyproject.toml]
+
+jobs:
+  publish-node:
+    name: Publish Custom Node to registry
+    runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'Nynxz' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install comfy-cli
+      - name: Publish to the ComfyUI registry
+        run: comfy node publish --token "$REGISTRY_TOKEN"
+        env:
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_ACCESS_TOKEN }}
