@@ -1,3 +1,4 @@
+import asyncio
 import os
 
 from aiohttp import web
@@ -28,18 +29,29 @@ def _resolve_view_file(query) -> str | None:
     return path if os.path.isfile(path) else None
 
 
-@PromptServer.instance.routes.get("/nodes2classic/video_meta")
-async def video_meta(request):
-    """Container fps/duration/size for the canvas video editors, as the trim nodes read them."""
-    path = _resolve_view_file(request.rel_url.query)
-    if path is None:
-        return web.Response(status=404)
+def _read_video_meta(path: str) -> dict:
     video = InputImpl.VideoFromFile(path)
     width, height = video.get_dimensions()
-    return web.json_response({
+    return {
         "fps": float(video.get_frame_rate()),
         "duration": video.get_duration(),
         "width": width,
         "height": height,
         "size": os.path.getsize(path),
-    })
+    }
+
+
+@PromptServer.instance.routes.get("/nodes2classic/video_meta")
+async def video_meta(request):
+    """Container fps/duration/size for the canvas video editors, as the trim nodes read them.
+
+    Probed on a worker thread: a file without a container duration is decoded
+    to count frames, which must not stall the server's event loop.
+    """
+    path = _resolve_view_file(request.rel_url.query)
+    if path is None:
+        return web.Response(status=404)
+    try:
+        return web.json_response(await asyncio.to_thread(_read_video_meta, path))
+    except Exception:
+        return web.Response(status=415)

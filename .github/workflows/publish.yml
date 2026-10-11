@@ -8,6 +8,9 @@ on:
     branches: [main]
     paths: [pyproject.toml]
 
+permissions:
+  contents: read
+
 jobs:
   publish-node:
     name: Publish Custom Node to registry

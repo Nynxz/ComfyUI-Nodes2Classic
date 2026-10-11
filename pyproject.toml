@@ -1,7 +1,7 @@
 [project]
 name = "comfyui-nodes2classic"
 description = "Draws Nodes 2.0-only widgets (Compare Images, LoRA stacks, Crop, Video Crop/Trim, Curves, Colors, Bounding Boxes, Resolution preview) on the classic litegraph canvas."
-version = "0.1.0"
+version = "0.1.1"
 license = { file = "LICENSE" }
 
 [project.urls]
